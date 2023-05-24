@@ -13,14 +13,20 @@ df = pd.read_csv('input.csv')
 
 # print(df)
 
-for s in df.get('Shares'):
+for idx, s in enumerate(df.get('Shares')):
     # print(s)
     msft = yf.Ticker(s+".BO")
-    df = msft.history(period="1y")
-    # print(df)
+    df = msft.history(period="5d", actions=False, rounding=True)
+    print(df)
     # print(df['Close'].size)
-    item = df['Close']
-    print(s, item[0],  item[item.size-1])
+    stock_close = df['Close']
+    # stock_date = df['Date']
+    if 0==idx:
+        print("Got updated on: ", df.index[0])
+
+    # print(df.index, stock_close[0])
+    print(s+".BO ",stock_close[0])
+    print('====================')
 
 
 
