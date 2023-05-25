@@ -5,14 +5,8 @@
 import yfinance as yf
 import pandas as pd
 import csv
-from getdates import get_dates
+from utils import get_dates, write_to_csv
 import datetime
-
-def write_to_csv(data):
-    
-    with open(datetime.date.today().strftime('%Y-%b-%d')+".csv", "w", newline='') as f:
-        writer = csv.writer(f, delimiter="\t")
-        writer.writerows(data)
 
 def process(stock, startDate, endDate, ):
     df = stock.history(start=startDate, end=endDate, actions=False, rounding=True)
@@ -49,41 +43,13 @@ def get_stock_data(datesDataFrame):
         # print('====================')
 
     print(csv_obj)
+    return csv_obj
 
-# write to csv
-    write_to_csv(csv_obj)
-
-
-# print(get_dates())
-
+# 1. get the dates for which data is required
 datesDataFrame = get_dates()
 
-# print(datesDataFrame['start_date'][0])
+# 2. get the final data obj
+csv_obj = get_stock_data(datesDataFrame)
 
-get_stock_data(datesDataFrame)
-
-
-
-# correct
-# shares = ["TCS", "WIPRO"]
-# for s in shares:
-#     stock = yf.Ticker(s+".BO")
-#     df = stock.history(period="1d")
-#     print(s+".BO", df['Close'][0])
-
-
-# stock = yf.Ticker("HCLTECH.BO")
-# d1 = stock.history(period="1d")
-# print(d1)   # works
-
-# df = pd.DataFrame(d1)
-
-# print(d1['Close'], df.get('Close'))   # works
-
-# print(d1)
-
-# print(d1['Close'][0], d1.get('Close')[0])   # gives final val perfect
-
-# print(df.to_json("./tp.json"))  # works
-
-
+# 3. write to csv
+write_to_csv(csv_obj, datetime.date.today().strftime('%Y-%b-%d')+".csv")
