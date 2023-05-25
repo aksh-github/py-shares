@@ -5,10 +5,12 @@
 import yfinance as yf
 import pandas as pd
 import csv
-from getdates import *
+from getdates import get_dates
+import datetime
 
 def write_to_csv(data):
-    with open("output.csv", "w", newline='') as f:
+    
+    with open(datetime.date.today().strftime('%Y-%b-%d')+".csv", "w", newline='') as f:
         writer = csv.writer(f, delimiter="\t")
         writer.writerows(data)
 
