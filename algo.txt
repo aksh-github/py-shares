@@ -1,0 +1,21 @@
+
+1. Get dates
+
+For any random share xyz (pass it thru cmd line or default to something), Get 7 dates for
+    5y
+    1
+    6m
+    3
+    1
+    5d
+    Today   //done
+
+    Format should be %Y-%m-%d   //done
+
+    Store these 7 dates in array as string. //done
+
+    These will be start dates. //done
+    
+    For end date add 1 to this except for today.    //done
+
+2. Use dates to get final data.

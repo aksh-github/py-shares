@@ -4,42 +4,74 @@
 
 import yfinance as yf
 import pandas as pd
-import numpy as np
+import csv
+from getdates import *
 
+def write_to_csv(data):
+    with open("output.csv", "w", newline='') as f:
+        writer = csv.writer(f, delimiter="\t")
+        writer.writerows(data)
+
+def process(stock, startDate, endDate, ):
+    df = stock.history(start=startDate, end=endDate, actions=False, rounding=True)
+    # print(df)
+    stock_close = df['Close']
+    # print(stock,stock_close[0])
+    return stock_close
 
 # input, read csv
 
-df = pd.read_csv('input.csv')
+def get_stock_data(datesDataFrame):
+    
+    filedf = pd.read_csv('input.csv')
+    csv_obj = [["Share", "Today", "5D"]]
 
-# print(df)
+    # print(df)
 
-for idx, s in enumerate(df.get('Shares')):
-    # print(s)
-    msft = yf.Ticker(s+".BO")
-    df = msft.history(period="5d", actions=False, rounding=True)
-    print(df)
-    # print(df['Close'].size)
-    stock_close = df['Close']
-    # stock_date = df['Date']
-    if 0==idx:
-        print("Got updated on: ", df.index[0])
+    for idx, s in enumerate(filedf.get('Shares')):
+        stock_values = [s]
+        # print(s)
+        stock = yf.Ticker(s+".BO")
 
-    # print(df.index, stock_close[0])
-    print(s+".BO ",stock_close[0])
-    print('====================')
+        #df = stock.history(start=datesDataFrame['start_date'][5], end=datesDataFrame['end_date'][5], actions=False, rounding=True)
+        stock_close = process(stock, datesDataFrame['start_date'][6], datesDataFrame['end_date'][6])
+        stock_values.append(stock_close[0])
+
+        stock_close = process(stock, datesDataFrame['start_date'][5], datesDataFrame['end_date'][5])
+        stock_values.append(stock_close[0])
+
+        csv_obj.append(stock_values)
+        # stock_values = []
+        
+        # print(s, stock_values)
+        # print('====================')
+
+    print(csv_obj)
+
+# write to csv
+    write_to_csv(csv_obj)
+
+
+# print(get_dates())
+
+datesDataFrame = get_dates()
+
+# print(datesDataFrame['start_date'][0])
+
+get_stock_data(datesDataFrame)
 
 
 
 # correct
 # shares = ["TCS", "WIPRO"]
 # for s in shares:
-#     msft = yf.Ticker(s+".BO")
-#     df = msft.history(period="1d")
+#     stock = yf.Ticker(s+".BO")
+#     df = stock.history(period="1d")
 #     print(s+".BO", df['Close'][0])
 
 
-# msft = yf.Ticker("HCLTECH.BO")
-# d1 = msft.history(period="1d")
+# stock = yf.Ticker("HCLTECH.BO")
+# d1 = stock.history(period="1d")
 # print(d1)   # works
 
 # df = pd.DataFrame(d1)
