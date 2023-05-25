@@ -7,7 +7,7 @@ import csv
 
 def get_dates():
 
-    stock = yf.Ticker("SBIN.BO")
+    stock = yf.Ticker("INFY.BO")
 
     date_range = ["5y", "1y", "6mo", "3mo", "1mo", "5d", "1d"]
     start_dates = []
