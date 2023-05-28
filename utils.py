@@ -52,7 +52,7 @@ def get_dates():
         'end_date': end_dates
     })
 
-    print(df)
+    # print(df)
 
     return df
 
@@ -98,7 +98,7 @@ def get_dates_v2():
     end_dates.append(None)
 
 
-    # # print(start_dates, end_dates)
+    # print(start_dates, end_dates)
 
     df = pd.DataFrame({
         'start_date': start_dates,
