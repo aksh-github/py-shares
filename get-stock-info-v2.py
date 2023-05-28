@@ -33,32 +33,32 @@ def get_stock_data(datesDataFrame):
     
         # today
         stock_close = process(stock, datesDataFrame['start_date'][6], datesDataFrame['end_date'][6])
-        stock_values.append(stock_close[0])
+        stock_values.append(int(stock_close[0]))
 
         # 5y
         stock_close = process(stock, datesDataFrame['start_date'][0], datesDataFrame['end_date'][0])
-        stock_values.append(stock_close[0])
+        stock_values.append(int(stock_close[0]))
 
         # 1y
         stock_close = process(stock, datesDataFrame['start_date'][1], datesDataFrame['end_date'][1])
-        stock_values.append(stock_close[0])
+        stock_values.append(int(stock_close[0]))
 
         # 6m
         stock_close = process(stock, datesDataFrame['start_date'][2], datesDataFrame['end_date'][2])
-        stock_values.append(stock_close[0])
+        stock_values.append(int(stock_close[0]))
 
         # 3m
         stock_close = process(stock, datesDataFrame['start_date'][3], datesDataFrame['end_date'][3])
-        stock_values.append(stock_close[0])
+        stock_values.append(int(stock_close[0]))
 
         # 1m
         stock_close = process(stock, datesDataFrame['start_date'][4], datesDataFrame['end_date'][4])
-        stock_values.append(stock_close[0])
+        stock_values.append(int(stock_close[0]))
 
 
         # 5d
         stock_close = process(stock, datesDataFrame['start_date'][5], datesDataFrame['end_date'][5])
-        stock_values.append(stock_close[0])
+        stock_values.append(int(stock_close[0]))
 
         csv_obj.append(stock_values)
         

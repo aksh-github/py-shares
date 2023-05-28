@@ -19,3 +19,24 @@ For any random share xyz (pass it thru cmd line or default to something), Get 7 
     For end date add 1 to this except for today.    //done
 
 2. Use dates to get final data.
+
+=======================
+
+
+=======================
+How to get %change details
+=======================
+1.
+moneycontrol details
+api
+https://priceapi.moneycontrol.com/pricefeed/nse/equitycash/RI
+
+2.
+from site code
+https://www.moneycontrol.com/india/stockpricequote/computers-software/infosys/IT
+parse html for function volumeGraph(volume_json) function
+
+
+eco times
+api
+https://json.bselivefeeds.indiatimes.com/ET_Community/peerperformance?exchange=50&companyid=13759&pagesize=5&default=true&companytype=equity
