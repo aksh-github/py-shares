@@ -67,11 +67,16 @@ def get_stock_data(datesDataFrame):
     print(csv_obj)
     return csv_obj
 
-# 1. get the dates for which data is required
-datesDataFrame = get_dates()
+def main():
 
-# 2. get the final data obj
-csv_obj = get_stock_data(datesDataFrame)
+    # 1. get the dates for which data is required
+    datesDataFrame = get_dates()
 
-# 3. write to csv
-write_to_csv(csv_obj, datetime.date.today().strftime('%Y-%b-%d')+".csv")
+    # 2. get the final data obj
+    csv_obj = get_stock_data(datesDataFrame)
+
+    # 3. write to csv
+    write_to_csv(csv_obj, datetime.date.today().strftime('%Y-%b-%d')+".csv")
+
+if __name__ == '__main__':
+    main()
