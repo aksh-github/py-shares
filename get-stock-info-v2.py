@@ -19,7 +19,7 @@ def process(stock, startDate, endDate, ):
 def get_stock_data(datesDataFrame):
     
     filedf = pd.read_csv('input.csv')
-    csv_obj = [["Share", "Today", "5y", "1y", "6m", "3m", "1m", "5D"]]
+    csv_obj = [["Share", "5y", "1y", "6m", "3m", "1m", "5D", "Today"]]
 
     # print(df)
 
@@ -30,11 +30,6 @@ def get_stock_data(datesDataFrame):
         # print(stock)
 
         stock = Ticker(s+".BO")
-    
-        # today
-        stock_close = process(stock, datesDataFrame['start_date'][6], datesDataFrame['end_date'][6])
-        # stock_values.append(int(stock_close[0]))
-        stock_values.append(int(stock_close.get(0, 0)))
 
         # 5y
         stock_close = process(stock, datesDataFrame['start_date'][0], datesDataFrame['end_date'][0])
@@ -64,6 +59,11 @@ def get_stock_data(datesDataFrame):
 
         # 5d
         stock_close = process(stock, datesDataFrame['start_date'][5], datesDataFrame['end_date'][5])
+        # stock_values.append(int(stock_close[0]))
+        stock_values.append(int(stock_close.get(0, 0)))
+
+        # today
+        stock_close = process(stock, datesDataFrame['start_date'][6], datesDataFrame['end_date'][6])
         # stock_values.append(int(stock_close[0]))
         stock_values.append(int(stock_close.get(0, 0)))
 
