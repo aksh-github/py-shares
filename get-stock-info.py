@@ -5,7 +5,7 @@
 import yfinance as yf
 import pandas as pd
 import csv
-from utils import get_dates, write_to_csv
+from utils import get_dates, write_to_csv, write_to_xls
 import datetime
 
 def process(stock, startDate, endDate, ):
@@ -32,38 +32,38 @@ def get_stock_data(datesDataFrame):
         # 5y
         stock_close = process(stock, datesDataFrame['start_date'][0], datesDataFrame['end_date'][0])
         # stock_values.append(stock_close[0])
-        stock_values.append(stock_close.get(0, 0))
+        stock_values.append(int(stock_close.get(0, 0)))
 
         # 1y
         stock_close = process(stock, datesDataFrame['start_date'][1], datesDataFrame['end_date'][1])
         # stock_values.append(stock_close[0])
-        stock_values.append(stock_close.get(0, 0))
+        stock_values.append(int(stock_close.get(0, 0)))
 
         # 6m
         stock_close = process(stock, datesDataFrame['start_date'][2], datesDataFrame['end_date'][2])
         # stock_values.append(stock_close[0])
-        stock_values.append(stock_close.get(0, 0))
+        stock_values.append(int(stock_close.get(0, 0)))
 
         # 3m
         stock_close = process(stock, datesDataFrame['start_date'][3], datesDataFrame['end_date'][3])
         # stock_values.append(stock_close[0])
-        stock_values.append(stock_close.get(0, 0))
+        stock_values.append(int(stock_close.get(0, 0)))
 
         # 1m
         stock_close = process(stock, datesDataFrame['start_date'][4], datesDataFrame['end_date'][4])
         # stock_values.append(stock_close[0])
-        stock_values.append(stock_close.get(0, 0))
+        stock_values.append(int(stock_close.get(0, 0)))
 
         # 5d
         stock_close = process(stock, datesDataFrame['start_date'][5], datesDataFrame['end_date'][5])
         # stock_values.append(stock_close[0])
-        stock_values.append(stock_close.get(0, 0))
+        stock_values.append(int(stock_close.get(0, 0)))
 
         # today
         #df = stock.history(start=datesDataFrame['start_date'][5], end=datesDataFrame['end_date'][5], actions=False, rounding=True)
         stock_close = process(stock, datesDataFrame['start_date'][6], datesDataFrame['end_date'][6])
         # stock_values.append(stock_close[0])
-        stock_values.append(stock_close.get(0, 0))
+        stock_values.append(int(stock_close.get(0, 0)))
 
         csv_obj.append(stock_values)
         # stock_values = []
@@ -83,7 +83,8 @@ def main():
     csv_obj = get_stock_data(datesDataFrame)
 
     # 3. write to csv
-    write_to_csv(csv_obj, datetime.date.today().strftime('%Y-%b-%d')+".tsv")
+    # write_to_csv(csv_obj, datetime.date.today().strftime('%Y-%b-%d')+".tsv")
+    write_to_xls(csv_obj, datetime.date.today().strftime('%Y-%b-%d'))
 
 if __name__ == '__main__':
     main()

@@ -4,7 +4,7 @@
 
 from yahooquery import Ticker
 import pandas as pd
-from utils import get_dates_v2, get_dates, write_to_csv
+from utils import get_dates_v2, get_dates, write_to_csv, write_to_xls
 import datetime
 
 def process(stock, startDate, endDate, ):
@@ -81,8 +81,9 @@ def main():
     # 2. get the final data obj
     csv_obj = get_stock_data(datesDataFrame)
 
-    # 3. write to csv
-    write_to_csv(csv_obj, datetime.date.today().strftime('%Y-%b-%d')+"-v2.tsv")
+    # 3. write to file
+    # write_to_csv(csv_obj, datetime.date.today().strftime('%Y-%b-%d')+"-v2.tsv")
+    write_to_xls(csv_obj, datetime.date.today().strftime('%Y-%b-%d')+"-v2")
 
 
 if __name__ == '__main__':

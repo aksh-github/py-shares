@@ -5,6 +5,9 @@ import yfinance as yf
 from yahooquery import Ticker
 import pandas as pd
 import csv
+import xlsxwriter
+import uuid
+
 
 def get_dates():
 
@@ -114,4 +117,20 @@ def write_to_csv(data, filename):
     with open(filename, "w", newline='') as f:
         writer = csv.writer(f, delimiter="\t")
         writer.writerows(data)
-# print(datetime.date.today().strftime('%Y-%b-%d'))
+
+
+def write_to_xls(data, filename):
+    workbook = xlsxwriter.Workbook(filename=filename + '-' + str(uuid.uuid4())[:8] + ".xlsx")
+    worksheet = workbook.add_worksheet()
+
+    row = 0
+
+    for i in range(len(data)):
+        col = 0
+        for j in range(len(data[i])):
+                # print(data[i][j])
+            worksheet.write(row, col, data[i][j])
+            col = col + 1
+        row = row + 1
+
+    workbook.close()
