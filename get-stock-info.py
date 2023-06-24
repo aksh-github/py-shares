@@ -8,6 +8,8 @@ import csv
 from utils import get_dates, write_to_csv, write_to_xls
 import datetime
 
+# lot of changes are not in this as coppared to v2 after 23rd jun
+
 def process(stock, startDate, endDate, ):
     df = stock.history(start=startDate, end=endDate, actions=False, rounding=True)
     # print(df)
