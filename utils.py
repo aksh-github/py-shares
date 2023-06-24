@@ -62,41 +62,57 @@ def get_dates():
 
 def get_dates_v2():
 
-    stock = Ticker("TECHM.BO")
+    stock = Ticker("sbin.BO")
 
-    date_range = ["5y", "1y", "6mo", "3mo", "1mo", "5d", "1d"]
+    date_range = ["5y", "2y", "1y", "6mo", "3mo", "1mo", "5d", "1d"]
     start_dates = []
     end_dates = []
 
-    df = stock.history(period=date_range[0])
+    idx = 0
+
+    df = stock.history(period=date_range[idx])
     # print(df)
     # print(df.index[0][1], df.index[0][1].strftime("%Y-%m-%d"))
     start_dates.append(df.index[0][1].strftime("%Y-%m-%d"))
     end_dates.append((df.index[0][1] + datetime.timedelta(days=1)).strftime("%Y-%m-%d"))
 
-    df = stock.history(period=date_range[1])
+
+    idx = idx + 1
+    df = stock.history(period=date_range[idx])
     start_dates.append(df.index[0][1].strftime("%Y-%m-%d"))
     end_dates.append((df.index[0][1] + datetime.timedelta(days=1)).strftime("%Y-%m-%d"))
 
-    df = stock.history(period=date_range[2])
+    idx = idx + 1
+    df = stock.history(period=date_range[idx])
     start_dates.append(df.index[0][1].strftime("%Y-%m-%d"))
     end_dates.append((df.index[0][1] + datetime.timedelta(days=1)).strftime("%Y-%m-%d"))
 
-    df = stock.history(period=date_range[3])
+    idx = idx + 1
+    df = stock.history(period=date_range[idx])
     start_dates.append(df.index[0][1].strftime("%Y-%m-%d"))
     end_dates.append((df.index[0][1] + datetime.timedelta(days=1)).strftime("%Y-%m-%d"))
 
-    df = stock.history(period=date_range[4])
+    idx = idx + 1
+    df = stock.history(period=date_range[idx])
     start_dates.append(df.index[0][1].strftime("%Y-%m-%d"))
     end_dates.append((df.index[0][1] + datetime.timedelta(days=1)).strftime("%Y-%m-%d"))
 
 
-    df = stock.history(period=date_range[5])
+    idx = idx + 1
+    df = stock.history(period=date_range[idx])
     start_dates.append(df.index[0][1].strftime("%Y-%m-%d"))
     end_dates.append((df.index[0][1] + datetime.timedelta(days=1)).strftime("%Y-%m-%d"))
+
+
+    idx = idx + 1
+    df = stock.history(period=date_range[idx])
+    start_dates.append(df.index[0][1].strftime("%Y-%m-%d"))
+    end_dates.append((df.index[0][1] + datetime.timedelta(days=1)).strftime("%Y-%m-%d"))
+
 
     # # today
-    df = stock.history(period=date_range[6])
+    idx = idx + 1
+    df = stock.history(period=date_range[idx])
     start_dates.append(df.index[0][1].strftime("%Y-%m-%d"))
     end_dates.append(None)
 
