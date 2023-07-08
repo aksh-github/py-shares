@@ -21,17 +21,14 @@ def process(stock, startDate, endDate, ):
 def get_stock_data(datesDataFrame):
     
     filedf = pd.read_csv('input.csv')
-    csv_obj = [["Share", "5y", "2y", "1y", "6m", "3m", "1m", "5D", "Today"]]
+    csv_obj = [["Share", "5y", "2y", "1y", "6m", "3m", "1m", "5d", "Today"]]
 
     # print(df)
 
     for idx, s in enumerate(filedf.get('Shares')):
         stock_values = [s]
-        # print(s)
-        # stock = Ticker(s+".BO").history(start=datesDataFrame['start_date'][6], end=datesDataFrame['end_date'][6], )
-        # print(stock)
-
-        stock = Ticker(s+".BO")
+        
+        stock = Ticker(s+".NS")
 
         id = 0
 

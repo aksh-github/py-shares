@@ -11,7 +11,7 @@ import uuid
 
 def get_dates():
 
-    stock = yf.Ticker("INFY.BO")
+    stock = yf.Ticker("HINDUNILVR.NS")
 
     date_range = ["5y", "1y", "6mo", "3mo", "1mo", "5d", "1d"]
     start_dates = []
@@ -62,7 +62,7 @@ def get_dates():
 
 def get_dates_v2():
 
-    stock = Ticker("sbin.BO")
+    stock = Ticker("HINDUNILVR.NS")
 
     date_range = ["5y", "2y", "1y", "6mo", "3mo", "1mo", "5d", "1d"]
     start_dates = []
