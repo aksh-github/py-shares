@@ -4,7 +4,7 @@
 
 from yahooquery import Ticker
 import pandas as pd
-from utils import get_dates_v2, get_dates, write_to_csv, write_to_xls
+from utils import get_dates_v2, write_to_xls
 import datetime
 
 # lot of changes are done afte 23rd Jun which are not in get_stock_info.py

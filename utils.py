@@ -1,6 +1,7 @@
 
 
 import datetime
+from datetime import date, timedelta
 import yfinance as yf
 from yahooquery import Ticker
 import pandas as pd
@@ -59,6 +60,29 @@ def get_dates():
 
     return df
 
+
+def get_dates_v2_new():
+    
+    # date_range = ["5y", "2y", "1y", "6mo", "3mo", "1mo", "5d", "1d"]
+    date_range = [365*5, 365*2, 365*1, 181, 90, 30, 5, 0]
+    start_dates = []
+    end_dates = []
+
+    current_date = date.today()
+
+    for noOfDays in date_range:
+        back_date = current_date - timedelta(days=noOfDays)
+        start_dates.append(back_date.strftime("%Y-%m-%d"))
+        end_dates.append((back_date - timedelta(days=1)).strftime("%Y-%m-%d"))
+
+    df = pd.DataFrame({
+        'start_date': start_dates,
+        'end_date': end_dates
+    })
+
+    print(df)
+
+    return df
 
 def get_dates_v2():
 

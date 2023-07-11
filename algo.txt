@@ -26,6 +26,9 @@ For any random share xyz (pass it thru cmd line or default to something), Get 7 
 =======================
 How to get %change details
 =======================
+
+https://www.zenrows.com/blog/web-scraping-intercepting-xhr-requests#conclusion
+
 1.
 moneycontrol details
 api
