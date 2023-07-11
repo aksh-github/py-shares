@@ -32,62 +32,14 @@ def get_stock_data(datesDataFrame):
 
         id = 0
 
-        # 5y
-        if(idx==0):
-            print(csv_obj[0][id+1] + ': ' + datesDataFrame['start_date'][id])
+        for tp in csv_obj[0][1:]:
+            if(idx==0):
+                print(tp + ': ' + datesDataFrame['start_date'][id])
 
-        stock_close = process(stock, datesDataFrame['start_date'][id], datesDataFrame['end_date'][id])
-        stock_values.append(int(stock_close.get(0, 0)))
+            stock_close = process(stock, datesDataFrame['start_date'][id], datesDataFrame['end_date'][id])
+            stock_values.append(int(stock_close.get(0, 0)))
 
-        # 2y
-        id = id + 1
-        if(idx==0):
-            print(csv_obj[0][id+1] + ': ' + datesDataFrame['start_date'][id])
-        stock_close = process(stock, datesDataFrame['start_date'][id], datesDataFrame['end_date'][id])
-        stock_values.append(int(stock_close.get(0, 0)))
-
-        # 1y
-        id = id + 1
-        if(idx==0):
-            print(csv_obj[0][id+1] + ': ' + datesDataFrame['start_date'][id])
-        stock_close = process(stock, datesDataFrame['start_date'][id], datesDataFrame['end_date'][id])
-        stock_values.append(int(stock_close.get(0, 0)))
-
-        # 6m
-        id = id + 1
-        if(idx==0):
-            print(csv_obj[0][id+1] + ': ' + datesDataFrame['start_date'][id])
-        stock_close = process(stock, datesDataFrame['start_date'][id], datesDataFrame['end_date'][id])
-        stock_values.append(int(stock_close.get(0, 0)))
-
-        # 3m
-        id = id + 1
-        if(idx==0):
-            print(csv_obj[0][id+1] + ': ' + datesDataFrame['start_date'][id])
-        stock_close = process(stock, datesDataFrame['start_date'][id], datesDataFrame['end_date'][id])
-        stock_values.append(int(stock_close.get(0, 0)))
-
-        # 1m
-        id = id + 1
-        if(idx==0):
-            print(csv_obj[0][id+1] + ': ' + datesDataFrame['start_date'][id])
-        stock_close = process(stock, datesDataFrame['start_date'][id], datesDataFrame['end_date'][id])
-        stock_values.append(int(stock_close.get(0, 0)))
-
-
-        # 5d
-        id = id + 1
-        if(idx==0):
-            print(csv_obj[0][id+1] + ': ' + datesDataFrame['start_date'][id])
-        stock_close = process(stock, datesDataFrame['start_date'][id], datesDataFrame['end_date'][id])
-        stock_values.append(int(stock_close.get(0, 0)))
-
-        # today
-        id = id + 1
-        if(idx==0):
-            print(csv_obj[0][id+1] + ': ' + datesDataFrame['start_date'][id])
-        stock_close = process(stock, datesDataFrame['start_date'][id], datesDataFrame['end_date'][id])
-        stock_values.append(int(stock_close.get(0, 0)))
+            id = id + 1
 
         csv_obj.append(stock_values)
         
