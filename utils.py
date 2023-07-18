@@ -160,7 +160,7 @@ def write_to_csv(data, filename):
 
 
 def write_to_xls(data, filename):
-    workbook = xlsxwriter.Workbook(filename=filename + '-' + str(uuid.uuid4())[:8] + ".xlsx")
+    workbook = xlsxwriter.Workbook(filename='./output/' + filename + '-' + str(uuid.uuid4())[:8] + ".xlsx")
     worksheet = workbook.add_worksheet()
 
     row = 0

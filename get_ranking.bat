@@ -1,7 +1,7 @@
 
 echo off
 echo Running the script to rank the shares...
-python async.py
+python ranking.py
 
 echo:
 
