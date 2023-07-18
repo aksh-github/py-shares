@@ -57,7 +57,7 @@ def main():
 
     # 3. write to file
     # write_to_csv(csv_obj, datetime.date.today().strftime('%Y-%b-%d')+"-v2.tsv")
-    write_to_xls(csv_obj, datetime.date.today().strftime('%Y-%b-%d')+"-v2")
+    write_to_xls(csv_obj, "data-" + datetime.date.today().strftime('%Y-%b-%d')+"-v2")
 
 
 if __name__ == '__main__':
