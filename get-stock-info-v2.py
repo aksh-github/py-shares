@@ -25,7 +25,7 @@ def get_stock_data(datesDataFrame):
 
     # print(df)
 
-    for idx, s in enumerate(filedf.get('Shares')):
+    for idx, s in enumerate(filedf.get('Share')):
         stock_values = [s]
         
         stock = Ticker(s+".NS")
