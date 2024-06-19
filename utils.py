@@ -84,6 +84,17 @@ def get_dates_v2_new():
 
     return df
 
+
+def getDatesWithDiff(diff):
+    # Get today's date
+    today = date.today()
+    one_year_back = today - timedelta(days=diff)
+
+    # print("Today's date:", today.strftime("%Y-%m-%d"))
+    # print("Date one year back:", one_year_back.strftime("%Y-%m-%d"))
+
+    return [today.strftime("%Y-%m-%d"), one_year_back.strftime("%Y-%m-%d")]
+
 def get_dates_v2():
 
     stock = Ticker("HINDUNILVR.NS")
