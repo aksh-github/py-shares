@@ -4,6 +4,19 @@ import pandas as pd
 from utils import get_dates_v2, getDatesWithDiff, write_to_xls
 from datetime import date, timedelta
 
+# all abt pandas: https://www.youtube.com/watch?v=DkjCaAMBGWM&t=57s
+
+def dumData():
+    pdf = pd.read_excel('./output/year-data-avg.xlsx')
+
+    # print(pdf['close'].size)
+    # print(pdf['symbol'][0])
+
+    #share name
+    sym = pdf['symbol']
+    # sym = pdf.index.get_level_values(0)[0]
+    print(sym)
+
 def processData(pdf=None, rowIdx=0):
     # pdf = pd.read_excel('./output/year-data-avg.xlsx')
 
@@ -98,18 +111,8 @@ def generateData(stock: Ticker, startDate=365, endDate=0 ):
     return pdf
 
 
-def main():
-    
+def iterateInput(filedf):
     all_data=[]
-
-    # pdfhead.to_excel('./output/year-data.xlsx')
-
-# 1. read share names
-    filedf = pd.read_csv('input.csv')
-
-    # print(df)
-
-# 2. iterate over each and process
     for idx, share in enumerate(filedf.get('Shares')):
     #for x in range(2):
         print("processing...", share)
@@ -119,6 +122,19 @@ def main():
         # print()
         for y in range(len(year_data)):
             all_data.append(year_data[y])
+    return all_data
+
+def main():
+
+    # pdfhead.to_excel('./output/year-data.xlsx')
+
+# 1. read share names
+    filedf = pd.read_csv('input.csv')
+
+    # print(df)
+
+# 2. iterate over each and process
+    all_data = iterateInput(filedf)
 
     # all_data.append(year_data[0])
 
