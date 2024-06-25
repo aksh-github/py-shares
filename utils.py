@@ -171,7 +171,9 @@ def write_to_csv(data, filename):
 
 
 def write_to_xls(data, filename):
-    workbook = xlsxwriter.Workbook(filename='./output/' + filename + '-' + str(uuid.uuid4())[:8] + ".xlsx")
+    ffilename = './output/' + filename + '-' + str(uuid.uuid4())[:8] + ".xlsx"
+
+    workbook = xlsxwriter.Workbook(filename=ffilename)
     worksheet = workbook.add_worksheet()
 
     row = 0
@@ -185,3 +187,5 @@ def write_to_xls(data, filename):
         row = row + 1
 
     workbook.close()
+
+    print("data written to ", ffilename)
