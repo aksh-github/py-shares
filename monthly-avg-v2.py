@@ -33,7 +33,7 @@ def get_hist(stockname):
 
 
 def calculate(pdf):
-    avgdf = pdf[['uxts', 'MonYr', 'symbol', 'close']].groupby(['uxts', 'MonYr', 'symbol']).agg(sum=('close', 'sum'), count=('close', 'size'))
+    avgdf = pdf[['uxts', 'MonYr', 'symbol', 'close']].groupby(['uxts', 'MonYr', 'symbol']).agg(sum=('close', 'sum'), count=('close', 'size'), max=('close', 'max'))
     # show(avgdf)
 
     avgdf['avg'] = avgdf['sum'] / avgdf['count']
@@ -86,15 +86,20 @@ def iterateInput(filedf):
             chgdf['MonYr'] = avgdf['MonYr'][1:]     #skip 1st because its 0
 
         rowOfAvg = []
+        rowOfMax = []
         rowOfChg = []
         for j, month in enumerate(avgdf['avg']):
             if(j==0):
                 rowOfAvg.append(avgdf['symbol'].values[0])
                 rowOfAvg.append("")
             rowOfAvg.append(int(avgdf['avg'].values[j]))
+            rowOfMax.append(int(avgdf['max'].values[j]))
             rowOfChg.append(avgdf['LastChange'].values[j]*100-100)
 
-        all_data.append(rowOfAvg)
+        rowOfAvg.append("")     #empty col
+
+# create single row for avg n max
+        all_data.append([*rowOfAvg, *rowOfMax])
 
         # chgdf
         chgdf[avgdf['symbol'].values[0]] = rowOfChg[1:]     #skip 1st because its 0
