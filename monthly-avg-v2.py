@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 
 from utils import write_to_xls
 
+# https://www.youtube.com/watch?v=lpaq_6kU5hg
+
 def get_hist(stockname):
 
     stock = Ticker(stockname)
@@ -140,7 +142,7 @@ def main():
 
     # 3. write final data to excel
     # print(all_data)
-    # write_to_xls(all_data, "monthly-average-v2")
+    write_to_xls(all_data, "monthly-average-v2")
 
 # 4. plot graph
     plot_perc(chgdf)
