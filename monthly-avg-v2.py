@@ -21,6 +21,12 @@ def get_hist(stockname):
     # show(pdf)
 
     pdf = pdf.reset_index()
+    
+    
+    if(pdf.empty):
+        print("********** Could not fetch data for ", stockname)
+        print()
+        return pdf
     # show(pdf)
 
     # pdf['MonYr'] = pdf['date'].map(lambda x: str(x.year) + '-' + str(x.month))
@@ -53,6 +59,8 @@ def calculate(pdf):
 
 def plot_perc(percdf):
 
+    # show(percdf)
+
     for idx in range(len(percdf.columns)):
         if(idx!=0):
             print(percdf.columns[idx])
@@ -73,6 +81,12 @@ def iterateInput(filedf):
     #for x in range(2):
         print("processing...", share)
         pdf = get_hist(share)
+
+        # if no hist data available, continue
+
+        if(pdf.empty):
+            continue
+        
         avgdf = calculate(pdf)
         avgdf = avgdf.reset_index()
         # print(len(avgdf))
@@ -83,6 +97,8 @@ def iterateInput(filedf):
                 # print(j, month)
                 all_data[0].append(month)
                 # chgdf['MonYr']
+        
+        if(chgdf['MonYr'].empty):
             chgdf['MonYr'] = avgdf['MonYr'][1:]     #skip 1st because its 0
 
         rowOfAvg = []
@@ -118,9 +134,13 @@ def main():
     # 2. iterate over each and process
     all_data, chgdf = iterateInput(filedf)
 
+    if(len(all_data)<2):
+        print("Seems like there is no data available...")
+        return
+
     # 3. write final data to excel
     # print(all_data)
-    write_to_xls(all_data, "monthly-average-v2")
+    # write_to_xls(all_data, "monthly-average-v2")
 
 # 4. plot graph
     plot_perc(chgdf)
