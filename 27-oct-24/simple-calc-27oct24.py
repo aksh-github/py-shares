@@ -1,3 +1,4 @@
+import uuid
 import yfinance as yf
 import pandas as pd
 
@@ -23,24 +24,39 @@ except Exception as e:
     exit()
 
 # Create an empty DataFrame to store the stock data
-stock_data = pd.DataFrame(columns=['Stock', 'Last Year Price', 'Top Price', 'Latest Price'])
+stock_data = pd.DataFrame(columns=['Stock', 'Top Price', 'Last Year Price', 'Current Price', 'LYr % Change', 'Curr % Change'])
 
 # Fetch the data for each stock and extract the required prices
 for stock_name in stock_names:
     try:
         print('Getting data for: ' + stock_name)
-        data = yf.download(stock_name, period='1y')
-        first_day_price = round(data['Close'].iloc[0], 2)
-        top_price = round(data['Close'].max())
-        latest_price = round(data['Close'].iloc[-1])
-        stock_data = pd.concat([stock_data, pd.DataFrame({'Stock': [stock_name], 'First Day Price': [first_day_price], 'Top Price': [top_price], 'Latest Price': [latest_price]})])
+        # data = yf.download(stock_name, period='1y')
+        data = yf.Ticker(stock_name).history(period='1y')
+        if data is None or data.empty:
+            print(f"Error fetching data for {stock_name}: empty or null data")
+            continue
+        last_year_price = round(data['Close'].iloc[0] if data['Close'].iloc[0] is not None else 0, 2)
+        top_price = round(data['Close'].max() if data['Close'].max() is not None else 0)
+        current_price = round(data['Close'].iloc[-1] if data['Close'].iloc[-1] is not None else 0)
+
+
+        LY_percent_change = round(((top_price - last_year_price) / last_year_price) * 100, 2)
+        current_percent_change = round(((top_price - current_price) / current_price) * 100, 2)
+
+        if top_price > current_price:
+            current_percent_change = -current_percent_change
+        
+        stock_data = pd.concat([stock_data, pd.DataFrame({'Stock': [stock_name], 'Last Year Price': [last_year_price], 'Top Price': [top_price], 'Current Price': [current_price], 'LYr % Change': [LY_percent_change], 'Curr % Change': [current_percent_change]})], ignore_index=True)
     except Exception as e:
         print(f"Error fetching data for {stock_name}: {str(e)}")
+
 
 # Print the stock data
 print(stock_data)
 
 # Save the data to a CSV file
-stock_data.to_csv(output_summary_path, index=False)
+# stock_data.to_csv(output_summary_path, index=False)
+
+stock_data.to_excel("./27-oct-24/stock_summary" + '-' + str(uuid.uuid4())[:8] + ".xlsx", index=False)
 
 print("Data saved to", output_summary_path)
