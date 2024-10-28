@@ -8,6 +8,7 @@ stock_file_path = './27-oct-24/stock_names.txt'
 # Define the file path for the output CSV file
 output_file_path = './27-oct-24/stock_data.csv'
 output_summary_path = './27-oct-24/stock_summary.csv'
+output_summary_path_xl = "./27-oct-24/stock_summary" + '-' + str(uuid.uuid4())[:8] + ".xlsx"
 
 # Read the stock names from the text file
 try:
@@ -52,11 +53,15 @@ for stock_name in stock_names:
 
 
 # Print the stock data
-print(stock_data)
+# print(stock_data)
 
 # Save the data to a CSV file
 # stock_data.to_csv(output_summary_path, index=False)
 
-stock_data.to_excel("./27-oct-24/stock_summary" + '-' + str(uuid.uuid4())[:8] + ".xlsx", index=False)
+try:
+    stock_data.to_excel(output_summary_path_xl, index=False)
+except Exception as e:
+    print(f"Error saving data to {output_summary_path_xl}: {str(e)}")
+    exit()
 
-print("Data saved to", output_summary_path)
+print("Data saved to", output_summary_path_xl)
