@@ -25,7 +25,7 @@ except Exception as e:
     exit()
 
 # Create an empty DataFrame to store the stock data
-stock_data = pd.DataFrame(columns=['Stock', 'Top Price', 'Last Year Price', 'Current Price', 'LYr % Change', 'Curr % Change'])
+stock_data = pd.DataFrame(columns=['Stock', 'LYr Price', 'Top Price', 'Curr Price', 'LYr % Chg', 'Curr % Chg', 'LYr-Curr % Chg'])
 
 # Fetch the data for each stock and extract the required prices
 for stock_name in stock_names:
@@ -43,17 +43,29 @@ for stock_name in stock_names:
 
         LY_percent_change = round(((top_price - last_year_price) / last_year_price) * 100, 2)
         current_percent_change = round(((top_price - current_price) / current_price) * 100, 2)
+        
+        # calculate the % change between last year price and current price
+        last_Curr_percent_change = round(((current_price - last_year_price) / last_year_price) * 100, 2)
+
 
         if top_price > current_price:
             current_percent_change = -current_percent_change
         
-        stock_data = pd.concat([stock_data, pd.DataFrame({'Stock': [stock_name], 'Last Year Price': [last_year_price], 'Top Price': [top_price], 'Current Price': [current_price], 'LYr % Change': [LY_percent_change], 'Curr % Change': [current_percent_change]})], ignore_index=True)
+        stock_data = pd.concat([stock_data, pd.DataFrame({'Stock': [stock_name], 'LYr Price': [last_year_price], 'Top Price': [top_price], 'Curr Price': [current_price], 'LYr % Chg': [LY_percent_change], 'Curr % Chg': [current_percent_change] , 'LYr-Curr % Chg': [last_Curr_percent_change]})], ignore_index=True)
     except Exception as e:
         print(f"Error fetching data for {stock_name}: {str(e)}")
 
 
 # Print the stock data
 # print(stock_data)
+
+# Sort the stock data by LYr % Change
+sorted_data = stock_data.sort_values(by='LYr % Chg', ascending=False)
+print(sorted_data.head(5))
+
+# Sort the stock data by Curr % Change
+sorted_data = stock_data.sort_values(by='Curr % Chg', ascending=False)
+print(sorted_data.head(5))
 
 # Save the data to a CSV file
 # stock_data.to_csv(output_summary_path, index=False)
