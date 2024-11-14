@@ -60,11 +60,15 @@ for stock_name in stock_names:
 # print(stock_data)
 
 # Sort the stock data by LYr % Change
-sorted_data = stock_data.sort_values(by='LYr % Chg', ascending=False)
-print(sorted_data.head(5))
+# sorted_data = stock_data.sort_values(by='LYr % Chg', ascending=False)
+# print(sorted_data.head(5))
 
 # Sort the stock data by Curr % Change
-sorted_data = stock_data.sort_values(by='Curr % Chg', ascending=False)
+# sorted_data = stock_data.sort_values(by='Curr % Chg', ascending=False)
+# print(sorted_data.head(5))
+
+# Sort the stock data by LYr-Curr % Change
+sorted_data = stock_data.sort_values(by='LYr-Curr % Chg', ascending=False)
 print(sorted_data.head(5))
 
 # Save the data to a CSV file
