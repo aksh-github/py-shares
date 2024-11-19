@@ -74,10 +74,10 @@ print(sorted_data.head(5))
 # Save the data to a CSV file
 # stock_data.to_csv(output_summary_path, index=False)
 
-try:
-    stock_data.to_excel(output_summary_path_xl, index=False)
-except Exception as e:
-    print(f"Error saving data to {output_summary_path_xl}: {str(e)}")
-    exit()
+# try:
+#     stock_data.to_excel(output_summary_path_xl, index=False)
+# except Exception as e:
+#     print(f"Error saving data to {output_summary_path_xl}: {str(e)}")
+#     exit()
 
 print("Data saved to", output_summary_path_xl)
