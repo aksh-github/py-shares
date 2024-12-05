@@ -6,6 +6,9 @@ import os
 
 import requests
 
+extra_path = './27-oct-24'
+# extra_path = './'
+
 def send_telegram_message(message):
 
     # print(os.getcwd())
@@ -43,8 +46,8 @@ def get_top_stock_data(stock_file_path):
     # stock_file_path = './27-oct-24/stock_names.txt'
 
     # Define the file path for the output CSV file
-    output_summary_path_xl = "./27-oct-24/stock_summary" + '-' + str(uuid.uuid4())[:8] + ".xlsx"
-    output_eom_path_xl = "./27-oct-24/eom_closes" + '-' + str(uuid.uuid4())[:8] + ".xlsx"
+    output_summary_path_xl = "{}/stock_summary-{}.xlsx".format(extra_path, str(uuid.uuid4().hex[:8])) # f"{extra_path}/stock_summary-{uuid.uuid4()[:8])
+    output_eom_path_xl = "{}/monthly_highs-{}.xlsx".format(extra_path, str(uuid.uuid4().hex[:8])) # f"{extra_path}/monthly-highs-{uuid.uuid4()[:8]}.xlsx"
 
     # Read the stock names from the text file
     try:
@@ -183,6 +186,6 @@ if __name__ == "__main__":
         stock_file_path = sys.argv[1]
     else:
         # Use the default file path
-        stock_file_path = './27-oct-24/stock_names.txt'
+        stock_file_path = f'{extra_path}/stocks.txt'
     main(stock_file_path)
 
