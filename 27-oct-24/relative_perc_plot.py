@@ -1,39 +1,77 @@
 import yfinance as yf
 import matplotlib.pyplot as plt
 
-# Define the stock symbols
-stock_symbols = ['AAPL', 'GOOG', 'MSFT', 'AMZN']
+extra_path = './27-oct-24'
 
-# Define the time period
-period = '1y'
+def get_top_stock_data(stock_file_path):
 
-# Create a figure and axis
-fig, ax = plt.subplots()
+    # Create a figure and axis
+    fig, ax = plt.subplots()
 
-# Loop through each stock symbol
-for symbol in stock_symbols:
-    # Download the stock data
-    data = yf.download(symbol, period=period)
-    
-    # Calculate the relative percentage change
-    data['Relative Change'] = (data['Close'] / data['Close'].iloc[0] - 1) * 100
-    
-    # Resample the data to monthly frequency
-    monthly_data = data['Relative Change'].resample('ME').last()
-    
-    # Plot the relative percentage change
-    ax.plot(monthly_data, label=symbol, marker='o')
+    # Read the stock names from the text file
+    try:
+        with open(stock_file_path, 'r') as file:
+            stock_names = [line.strip() for line in file.readlines() if line]
+            if not stock_names:
+                print(f"File {stock_file_path} is empty.")
+                exit()
+    except FileNotFoundError:
+        print(f"File {stock_file_path} not found.")
+        exit()
+    except Exception as e:
+        print(f"Error reading file {stock_file_path}: {str(e)}")
+        exit()
 
-# Set the title and labels
-ax.set_title('Relative Percentage Change of Stocks')
-ax.set_xlabel('Months')
-ax.set_ylabel('Relative Percentage Change (%)')
+    # Fetch the data for each stock and extract the required prices
+    for stock_name in stock_names:
 
-# Add a legend
-ax.legend()
+        # break out of loop if stock name is empty or starts with '#'
+        if not stock_name or stock_name.startswith('#'):
+            break
 
-# Show the plot
-# plt.show()
+        try:
+            print('Getting data for: ' + stock_name)
+            # data = yf.download(stock_name, period='1y')
+            data = yf.Ticker(stock_name).history(period='1y')
+            if data is None or data.empty:
+                print(f"Error fetching data for {stock_name}: empty or null data")
+                continue
 
-# Save the plot to a file
-plt.savefig('./relative_percentage_change.png')
+            # Calculate the relative percentage change
+            data['Relative Change'] = (data['Close'] / data['Close'].iloc[0] - 1) * 100
+            
+            # Resample the data to monthly frequency
+            monthly_data = data['Relative Change'].resample('ME').last()
+            
+            # Plot the relative percentage change
+            ax.plot(monthly_data, label=stock_name, marker='o')
+
+        except Exception as e:
+            print(f"Error fetching data for {stock_name}: {str(e)}")
+
+    # Set the title and labels
+    ax.set_title('Relative Percentage Change of Stocks')
+    ax.set_xlabel('Months')
+    ax.set_ylabel('Relative Percentage Change (%)')
+
+    # Add a legend
+    ax.legend()
+
+    # Show the plot
+    # plt.show()
+
+    # Save the plot to a file
+    plt.savefig('./relative_percentage_change.png')
+
+    # Close the plot
+    plt.close()
+
+if __name__ == "__main__":
+    import sys
+
+    if len(sys.argv) > 1:
+        stock_file_path = sys.argv[1]
+    else:
+        # Use the default file path
+        stock_file_path = f'{extra_path}/stocks.txt'
+    get_top_stock_data(stock_file_path)
