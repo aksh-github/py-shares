@@ -71,6 +71,12 @@ def get_top_stock_data(stock_file_path):
 
     # Fetch the data for each stock and extract the required prices
     for stock_name in stock_names:
+
+        # break out of loop if stock name is empty or starts with '#'
+                
+        if not stock_name or stock_name.startswith('#'):
+            break
+
         try:
             print('Getting data for: ' + stock_name)
             # data = yf.download(stock_name, period='1y')
