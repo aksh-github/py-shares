@@ -85,31 +85,16 @@ def get_top_stock_data(stock_file_path):
                 print(f"Error fetching data for {stock_name}: empty or null data")
                 continue
 
-            # 1. % change (speed calculation)
+            # 1. % change (speed calculation) between last year price and current price and show top 5 
 
-            last_year_price = round(data['Close'].iloc[0] if data['Close'].iloc[0] is not None else 0, 2)
-            top_price = round(data['Close'].max() if data['Close'].max() is not None else 0)
-            current_price = round(data['Close'].iloc[-1] if data['Close'].iloc[-1] is not None else 0)
-
-
-            LY_percent_change = round(((top_price - last_year_price) / last_year_price) * 100, 2)
-            current_percent_change = round(((top_price - current_price) / current_price) * 100, 2)
-            
-            # calculate the % change between last year price and current price
-            last_Curr_percent_change = round(((current_price - last_year_price) / last_year_price) * 100, 2)
-
-
-            if top_price > current_price:
-                current_percent_change = -current_percent_change
-            
-            stock_data = pd.concat([stock_data, pd.DataFrame({'Stock': [stock_name.replace('.NS', '').replace('.BO', '')], 'LYr Price': [last_year_price], 'Top Price': [top_price], 'Curr Price': [current_price], 'LYr % Chg': [LY_percent_change], 'Curr % Chg': [current_percent_change] , 'LYr-Curr % Chg': [last_Curr_percent_change]})], ignore_index=True)
+            stock_data = speed(stock_data, stock_name, data)
 
             # end % change (speed calculation)
 
 
-            # 2. Get monthly close price
+            # 2. Get monthly max / avg etc price for last 12 months and write to excel
 
-            eomStockData = data.resample('ME').max()
+            eomStockData = data.resample('M').max()
             # print(eomStockData)
             
             # Select only the 'Close' column
@@ -168,6 +153,25 @@ def get_top_stock_data(stock_file_path):
 
     # Write the DataFrame to an Excel file
     df.to_excel(output_eom_path_xl, header=True, index=True)
+
+def speed(stock_data, stock_name, data):
+    last_year_price = round(data['Close'].iloc[0] if data['Close'].iloc[0] is not None else 0, 2)
+    top_price = round(data['Close'].max() if data['Close'].max() is not None else 0)
+    current_price = round(data['Close'].iloc[-1] if data['Close'].iloc[-1] is not None else 0)
+
+
+    LY_percent_change = round(((top_price - last_year_price) / last_year_price) * 100, 2)
+    current_percent_change = round(((top_price - current_price) / current_price) * 100, 2)
+            
+            # calculate the % change between last year price and current price
+    last_Curr_percent_change = round(((current_price - last_year_price) / last_year_price) * 100, 2)
+
+
+    if top_price > current_price:
+        current_percent_change = -current_percent_change
+            
+    stock_data = pd.concat([stock_data, pd.DataFrame({'Stock': [stock_name.replace('.NS', '').replace('.BO', '')], 'LYr Price': [last_year_price], 'Top Price': [top_price], 'Curr Price': [current_price], 'LYr % Chg': [LY_percent_change], 'Curr % Chg': [current_percent_change] , 'LYr-Curr % Chg': [last_Curr_percent_change]})], ignore_index=True)
+    return stock_data
 
     # end monthly data
 
