@@ -94,7 +94,8 @@ def get_top_stock_data(stock_file_path):
 
             # 2. Get monthly max / avg etc price for last 12 months and write to excel
 
-            eomStockData = data.resample('M').max()
+            eomStockData = data.resample('M').mean()    # Get monthly average close price
+            # eomStockData = data.resample('M').max()     # Get monthly max close price
             # print(eomStockData)
             
             # Select only the 'Close' column
@@ -133,6 +134,7 @@ def get_top_stock_data(stock_file_path):
     top5 = sorted_data.head(5).reset_index(drop=True)
     print(top5.to_string(index=False))
 
+    
     # only for existing stocks
     bottom5 = sorted_data.tail(5).reset_index(drop=True)
 
@@ -140,6 +142,7 @@ def get_top_stock_data(stock_file_path):
     try:
         send_telegram_message(top5[["Stock", "Curr Price", "LYr-Curr % Chg"]].to_string(index=False))
         send_telegram_message(bottom5[["Stock", "Curr Price", "LYr-Curr % Chg"]].to_string(index=False))
+        
     except Exception as e:
         print(f"Data was not sent to Telegram: {str(e)}")
 
