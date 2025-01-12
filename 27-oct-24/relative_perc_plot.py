@@ -32,7 +32,7 @@ def get_top_stock_data(stock_file_path):
         try:
             print('Getting data for: ' + stock_name)
             # data = yf.download(stock_name, period='1y')
-            data = yf.Ticker(stock_name).history(period='1y')
+            data = yf.Ticker(stock_name).history(period='6mo')
             if data is None or data.empty:
                 print(f"Error fetching data for {stock_name}: empty or null data")
                 continue
@@ -41,7 +41,9 @@ def get_top_stock_data(stock_file_path):
             data['Relative Change'] = (data['Close'] / data['Close'].iloc[0] - 1) * 100
             
             # Resample the data to monthly frequency
-            monthly_data = data['Relative Change'].resample('ME').last()
+            # monthly_data = data['Relative Change'].resample('M').last()
+            # Get monthly average close price
+            monthly_data = data['Relative Change'].resample('M').mean() 
             
             # Plot the relative percentage change
             ax.plot(monthly_data, label=stock_name, marker='o')
@@ -58,10 +60,10 @@ def get_top_stock_data(stock_file_path):
     ax.legend()
 
     # Show the plot
-    # plt.show()
+    plt.show()
 
     # Save the plot to a file
-    plt.savefig('./relative_percentage_change.png')
+    # plt.savefig('./relative_percentage_change.png')
 
     # Close the plot
     plt.close()
