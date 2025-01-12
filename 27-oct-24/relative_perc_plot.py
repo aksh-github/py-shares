@@ -32,7 +32,7 @@ def get_top_stock_data(stock_file_path):
         try:
             print('Getting data for: ' + stock_name)
             # data = yf.download(stock_name, period='1y')
-            data = yf.Ticker(stock_name).history(period='6mo')
+            data = yf.Ticker(stock_name).history(period='1mo')
             if data is None or data.empty:
                 print(f"Error fetching data for {stock_name}: empty or null data")
                 continue
