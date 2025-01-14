@@ -78,7 +78,7 @@ if __name__ == "__main__":
     import sys
 
     if len(sys.argv) > 1:
-        stock_file_path = sys.argv[1]
+        stock_file_path = sys.argv[1]   # exis-aksh.txt or exis-baba.txt
     else:
         # Use the default file path
         stock_file_path = f'{extra_path}/stocks.txt'
