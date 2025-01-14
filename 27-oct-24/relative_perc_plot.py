@@ -1,5 +1,11 @@
 import yfinance as yf
 import matplotlib.pyplot as plt
+import matplotlib
+
+
+# linux only for interactive plot
+# python3 -m pip install pyqt5
+matplotlib.use('qt5agg')
 
 extra_path = './27-oct-24'
 
@@ -40,10 +46,10 @@ def get_top_stock_data(stock_file_path):
             # Calculate the relative percentage change
             data['Relative Change'] = (data['Close'] / data['Close'].iloc[0] - 1) * 100
             
-            # Resample the data to monthly frequency
+            # Resample the data to monthly frequency (ME for latest)
             # monthly_data = data['Relative Change'].resample('M').last()
-            # Get monthly average close price
-            monthly_data = data['Relative Change'].resample('M').mean() 
+            # Get monthly average close price (ME for latest)
+            monthly_data = data['Relative Change'].resample('ME').mean() 
             
             # Plot the relative percentage change
             ax.plot(monthly_data, label=stock_name, marker='o')
