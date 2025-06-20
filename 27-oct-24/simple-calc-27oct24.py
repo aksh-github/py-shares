@@ -1,10 +1,15 @@
+import datetime
 import uuid
 import yfinance as yf
 import pandas as pd
 import os
 # os.chdir('./27-oct-24')
 
-import requests
+# import requests 
+# new package added to overcome rate limit error
+# https://github.com/ranaroussi/yfinance/issues/2422#issuecomment-2840774505 (see answer from TianqiMikeHu or alindsaydiaz)
+
+from curl_cffi import requests
 
 extra_path = './27-oct-24'
 # extra_path = './'
@@ -40,14 +45,14 @@ def send_telegram_message(message):
         print(e)
         # exit()
 
-def get_top_stock_data(stock_file_path):
+def get_top_stock_data(stock_file_path, output_eom_path_xl, option):
 
     # Define the file path for the text file containing stock names
     # stock_file_path = './27-oct-24/stock_names.txt'
 
     # Define the file path for the output CSV file
-    output_summary_path_xl = "{}/stock_summary-{}.xlsx".format(extra_path, str(uuid.uuid4().hex[:8])) # f"{extra_path}/stock_summary-{uuid.uuid4()[:8])
-    output_eom_path_xl = "{}/monthly_highs-{}.xlsx".format(extra_path, str(uuid.uuid4().hex[:8])) # f"{extra_path}/monthly-highs-{uuid.uuid4()[:8]}.xlsx"
+    # output_summary_path_xl = "{}/stock_summary-{}.xlsx".format(extra_path, str(uuid.uuid4().hex[:8])) # f"{extra_path}/stock_summary-{uuid.uuid4()[:8])
+    output_eom_path_xl = "{}/{}".format(extra_path, output_eom_path_xl) # f"{extra_path}/monthly-highs-{uuid.uuid4()[:8]}.xlsx"
 
     # Read the stock names from the text file
     try:
@@ -79,8 +84,9 @@ def get_top_stock_data(stock_file_path):
 
         try:
             print('Getting data for: ' + stock_name)
+            session = requests.Session(impersonate="chrome")
             # data = yf.download(stock_name, period='1y')
-            data = yf.Ticker(stock_name).history(period='1y')
+            data = yf.Ticker(stock_name, session=session).history(period='3mo')
             if data is None or data.empty:
                 print(f"Error fetching data for {stock_name}: empty or null data")
                 continue
@@ -94,8 +100,17 @@ def get_top_stock_data(stock_file_path):
 
             # 2. Get monthly max / avg etc price for last 12 months and write to excel
 
-            eomStockData = data.resample('M').mean()    # Get monthly average close price
-            # eomStockData = data.resample('M').max()     # Get monthly max close price
+            if option == 'max':
+                eomStockData = data.resample('M').max()     # Get monthly max close price
+                sheet_name = 'Max'
+            elif option == 'avg':
+                eomStockData = data.resample('M').mean()    # Get monthly average close price
+                sheet_name = 'Avg'
+            else:
+                print('Invalid option for Resampling. Please choose either "max" or "avg"')
+                exit()
+            # eomStockData = data.resample('M').mean()    # Get monthly average close price (works correctly 19-jun-2025)
+            # eomStockData = data.resample('M').max()     # Get monthly max close price  (works correctly 19-jun-2025)
             # print(eomStockData)
             
             # Select only the 'Close' column
@@ -150,6 +165,10 @@ def get_top_stock_data(stock_file_path):
     # print(dfs)
 
     # Concatenate the list of DataFrames
+    if not dfs:
+        print("No data found for any of the stocks")
+        exit()
+
     df = pd.concat(dfs, axis=1)
 
     # Convert the date index to 'MMM-YY' format
@@ -159,7 +178,14 @@ def get_top_stock_data(stock_file_path):
     df = df.T
 
     # Write the DataFrame to an Excel file
-    df.to_excel(output_eom_path_xl, header=True, index=True)
+    
+    if os.path.isfile(output_eom_path_xl):
+        # Append to existing file
+        with pd.ExcelWriter(output_eom_path_xl, engine='openpyxl', mode='a') as writer:
+            df.to_excel(writer, sheet_name=sheet_name, header=True, index=True)
+    else:
+        # Create new file
+        df.to_excel(output_eom_path_xl, sheet_name=sheet_name, header=True, index=True)
 
 def speed(stock_data, stock_name, data):
     last_year_price = round(data['Close'].iloc[0] if data['Close'].iloc[0] is not None else 0, 2)
@@ -193,7 +219,10 @@ def speed(stock_data, stock_name, data):
     # print("Data saved to", output_summary_path_xl)
 
 def main(stock_file_path):
-    get_top_stock_data(stock_file_path)
+    output_eom_path_xl = f'eom-data-{datetime.date.today().strftime("%d-%b")}-{str(uuid.uuid4())[:8]}.xlsx'
+    # print(output_eom_path_xl)
+    get_top_stock_data(stock_file_path, output_eom_path_xl=output_eom_path_xl, option = "max")
+    get_top_stock_data(stock_file_path, output_eom_path_xl=output_eom_path_xl, option = "avg")
 
 
 if __name__ == "__main__":
