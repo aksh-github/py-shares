@@ -45,6 +45,9 @@ def send_telegram_message(message):
         print(e)
         # exit()
 
+
+data_cache = {}
+
 def get_top_stock_data(stock_file_path, output_eom_path_xl, option):
 
     # Define the file path for the text file containing stock names
@@ -86,10 +89,18 @@ def get_top_stock_data(stock_file_path, output_eom_path_xl, option):
             print('Getting data for: ' + stock_name)
             session = requests.Session(impersonate="chrome")
             # data = yf.download(stock_name, period='1y')
-            data = yf.Ticker(stock_name, session=session).history(period='3mo')
+
+            if data_cache.get(stock_name) is not None:
+                data = data_cache[stock_name]
+                print(f"******** Using cached data for {stock_name}")
+            else:
+                data = yf.Ticker(stock_name, session=session).history(period='3mo')
+
             if data is None or data.empty:
                 print(f"Error fetching data for {stock_name}: empty or null data")
                 continue
+
+            data_cache[stock_name] = data
 
             # 1. % change (speed calculation) between last year price and current price and show top 5 
 
