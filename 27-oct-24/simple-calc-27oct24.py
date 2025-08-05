@@ -94,7 +94,7 @@ def get_top_stock_data(stock_file_path, output_eom_path_xl, option):
                 data = data_cache[stock_name]
                 print(f"******** Using cached data for {stock_name}")
             else:
-                data = yf.Ticker(stock_name, session=session).history(period='3mo')
+                data = yf.Ticker(stock_name, session=session).history(period='1y')
 
             if data is None or data.empty:
                 print(f"Error fetching data for {stock_name}: empty or null data")
@@ -234,6 +234,8 @@ def main(stock_file_path):
     # print(output_eom_path_xl)
     get_top_stock_data(stock_file_path, output_eom_path_xl=output_eom_path_xl, option = "max")
     get_top_stock_data(stock_file_path, output_eom_path_xl=output_eom_path_xl, option = "avg")
+
+
 
 
 if __name__ == "__main__":
