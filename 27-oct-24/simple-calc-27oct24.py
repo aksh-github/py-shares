@@ -112,10 +112,10 @@ def get_top_stock_data(stock_file_path, output_eom_path_xl, option):
             # 2. Get monthly max / avg etc price for last 12 months and write to excel
 
             if option == 'max':
-                eomStockData = data.resample('M').max()     # Get monthly max close price
+                eomStockData = data.resample('ME').max()     # Get monthly max close price
                 sheet_name = 'Max'
             elif option == 'avg':
-                eomStockData = data.resample('M').mean()    # Get monthly average close price
+                eomStockData = data.resample('ME').mean()    # Get monthly average close price
                 sheet_name = 'Avg'
             else:
                 print('Invalid option for Resampling. Please choose either "max" or "avg"')
